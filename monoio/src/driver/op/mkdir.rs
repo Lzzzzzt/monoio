@@ -42,6 +42,6 @@ impl OpAble for MkDir {
 
     #[cfg(all(any(feature = "legacy", feature = "poll-io"), windows))]
     fn legacy_call(&mut self) -> io::Result<u32> {
-        todo!()
+        unimplemented!()
     }
 }
