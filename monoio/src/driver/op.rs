@@ -19,7 +19,7 @@ mod recv;
 mod send;
 mod write;
 
-#[cfg(target_os = "linux")]
+#[cfg(unix)]
 mod statx;
 
 #[cfg(unix)]
