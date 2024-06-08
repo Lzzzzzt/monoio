@@ -1,4 +1,4 @@
-use std::ffi::CString;
+use std::{ffi::CString, path::Path};
 
 use libc::mode_t;
 
@@ -11,7 +11,7 @@ pub(crate) struct MkDir {
 }
 
 impl Op<MkDir> {
-    pub(crate) fn mkdir(path: &str, mode: mode_t) -> std::io::Result<Op<MkDir>> {
+    pub(crate) fn mkdir<P: AsRef<Path>>(path: P, mode: mode_t) -> std::io::Result<Op<MkDir>> {
         let path = cstr(path.as_ref())?;
         Op::submit_with(MkDir { path, mode })
     }

@@ -23,6 +23,16 @@ mod permissions;
 #[cfg(target_os = "linux")]
 pub use permissions::Permissions;
 
+#[cfg(unix)]
+mod dir_builder;
+#[cfg(unix)]
+pub use dir_builder::DirBuilder;
+
+#[cfg(unix)]
+mod create_dir;
+#[cfg(unix)]
+pub use create_dir::{create_dir, create_dir_all};
+
 use crate::buf::IoBuf;
 
 /// Read the entire contents of a file into a bytes vector.
