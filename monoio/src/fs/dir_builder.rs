@@ -160,8 +160,8 @@ mod fs_impl {
             Op::mkdir(path, self.mode)?.await.meta.result.map(|_| ())
         }
 
-        pub(super) fn set_mode(&mut self, mode: mode_t) {
-            self.mode = mode;
+        pub(super) fn set_mode(&mut self, mode: u32) {
+            self.mode = mode as mode_t;
         }
     }
 }
