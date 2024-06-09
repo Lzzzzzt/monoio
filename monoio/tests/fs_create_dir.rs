@@ -1,3 +1,5 @@
+#![cfg(unix)]
+
 use monoio::fs;
 use tempfile::tempdir;
 
