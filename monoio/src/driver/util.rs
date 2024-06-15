@@ -32,6 +32,8 @@ pub(super) fn timespec(duration: std::time::Duration) -> io_uring::types::Timesp
 #[macro_export]
 macro_rules! syscall {
     ($fn: ident ( $($arg: expr),* $(,)* ) ) => {{
+        // use this lint due to the `stable` version of rust don't have
+        // the lint: `clippy::macro_metavars_in_unsafe`
         #[allow(unknown_lints)]
         #[allow(clippy::macro_metavars_in_unsafe)]
         let res = unsafe { libc::$fn($($arg, )*) };
@@ -48,6 +50,8 @@ macro_rules! syscall {
 #[macro_export]
 macro_rules! syscall {
     ($fn: ident ( $($arg: expr),* $(,)* ), $err_test: path, $err_value: expr) => {{
+        // use this lint due to the `stable` version of rust don't have
+        // the lint: `clippy::macro_metavars_in_unsafe`
         #[allow(unknown_lints)]
         #[allow(clippy::macro_metavars_in_unsafe)]
         let res = unsafe { $fn($($arg, )*) };
@@ -64,10 +68,14 @@ macro_rules! syscall {
 macro_rules! syscall_u32 {
     ($fn: ident ( $($arg: expr),* $(,)* ) ) => {{
         #[cfg(windows)]
+        // use this lint due to the `stable` version of rust don't have
+        // the lint: `clippy::macro_metavars_in_unsafe`
         #[allow(unknown_lints)]
         #[allow(clippy::macro_metavars_in_unsafe)]
         let res = unsafe { $fn($($arg, )*) };
         #[cfg(unix)]
+        // use this lint due to the `stable` version of rust don't have
+        // the lint: `clippy::macro_metavars_in_unsafe`
         #[allow(unknown_lints)]
         #[allow(clippy::macro_metavars_in_unsafe)]
         let res = unsafe { libc::$fn($($arg, )*) };
