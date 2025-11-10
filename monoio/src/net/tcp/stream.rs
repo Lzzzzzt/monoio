@@ -119,7 +119,7 @@ impl TcpStream {
             SocketAddr::V4(_) => AF_INET,
             SocketAddr::V6(_) => AF_INET6,
         };
-        let socket = crate::net::new_socket(domain, SOCK_STREAM)?;
+        let socket = crate::net::new_socket(domain, SOCK_STREAM).await?;
         #[allow(unused_mut)]
         let mut tfo = opts.tcp_fast_open;
 

@@ -23,9 +23,9 @@ pub struct UnixSeqpacketListener {
 
 impl UnixSeqpacketListener {
     /// Creates a new `UnixSeqpacketListener` bound to the specified path with custom backlog
-    pub fn bind_with_backlog<P: AsRef<Path>>(path: P, backlog: libc::c_int) -> io::Result<Self> {
+    pub async fn bind_with_backlog<P: AsRef<Path>>(path: P, backlog: libc::c_int) -> io::Result<Self> {
         let (addr, addr_len) = socket_addr(path.as_ref())?;
-        let socket = new_socket(libc::AF_UNIX, libc::SOCK_SEQPACKET)?;
+        let socket = new_socket(libc::AF_UNIX, libc::SOCK_SEQPACKET).await?;
         crate::syscall!(bind@RAW(socket, &addr as *const _ as *const _, addr_len))?;
         crate::syscall!(listen@RAW(socket, backlog))?;
         Ok(Self {
@@ -35,8 +35,8 @@ impl UnixSeqpacketListener {
 
     /// Creates a new `UnixSeqpacketListener` bound to the specified path with default backlog(128)
     #[inline]
-    pub fn bind<P: AsRef<Path>>(path: P) -> io::Result<Self> {
-        Self::bind_with_backlog(path, DEFAULT_BACKLOG)
+    pub async fn bind<P: AsRef<Path>>(path: P) -> io::Result<Self> {
+        Self::bind_with_backlog(path, DEFAULT_BACKLOG).await
     }
 
     /// Accept a UnixSeqpacket
