@@ -18,6 +18,7 @@ mod open;
 mod poll;
 mod recv;
 mod send;
+mod socket;
 #[cfg(unix)]
 mod statx;
 

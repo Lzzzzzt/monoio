@@ -27,7 +27,7 @@ use {
 
 // Copied from mio.
 #[cfg(unix)]
-pub(crate) fn new_socket(
+pub(crate) async fn new_socket(
     domain: libc::c_int,
     socket_type: libc::c_int,
 ) -> std::io::Result<libc::c_int> {
@@ -50,10 +50,13 @@ pub(crate) fn new_socket(
         }
     };
 
-    // Gives a warning for platforms without SOCK_NONBLOCK.
-    #[allow(clippy::let_and_return)]
+    // Use io_uring socket operation when available
     #[cfg(unix)]
-    let socket = crate::syscall!(socket@RAW(domain, socket_type, 0));
+    let socket = {
+        let op = crate::driver::op::Op::socket(domain, socket_type, 0)?;
+        let completion = op.await;
+        completion.meta.result.map(|fd| fd.into_inner() as libc::c_int)
+    };
 
     // Mimic `libstd` and set `SO_NOSIGPIPE` on apple systems.
     #[cfg(target_vendor = "apple")]
